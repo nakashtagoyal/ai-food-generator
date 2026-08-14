@@ -6,6 +6,11 @@ import RecipeDetail from '../components/RecipeDetail.jsx';
 import ShoppingList from '../components/ShoppingList.jsx';
 import * as api from '../api/api.js';
 import { useAuth } from '../context/AuthContext.jsx';
+import recipebg from "../../ recipebg.jpeg";
+import recbg1 from "../../recbg1.jpeg";
+import recbg2 from "../../recbg2.jpeg";
+import recbg3 from "../../recbg3.jpeg";
+
 // import { useEffect, useState } from 'react';
 
 const DIET_OPTIONS = ['vegan', 'vegetarian', 'gluten-free', 'keto', 'high-protein'];
@@ -27,7 +32,7 @@ export default function RecipeGeneratorPage({ onAuthOpen }) {
     "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600&q=80",
     "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1600&q=80",
     "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1600&q=80",
-    "/recipebg.jpeg", "/recbg1.jpeg", "/recbg2.jpeg", "/recbg3.jpeg"
+    recipebg, recbg1, recbg2, recbg3
   ];
 
   const [bg, setBg] = useState(backgrounds[0]);
