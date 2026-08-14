@@ -27,7 +27,7 @@ export default function RecipeGeneratorPage({ onAuthOpen }) {
     "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600&q=80",
     "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1600&q=80",
     "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1600&q=80",
-    "./recipebg.jpeg", "./recbg1.jpeg", "./recbg2.jpeg", "./recbg3.jpeg"
+    "/recipebg.jpeg", "/recbg1.jpeg", "/recbg2.jpeg", "/recbg3.jpeg"
   ];
 
   const [bg, setBg] = useState(backgrounds[0]);
