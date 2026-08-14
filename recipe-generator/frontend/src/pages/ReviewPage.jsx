@@ -17,7 +17,7 @@ function ReviewPage() {
 
     const fetchReviews = async () => {
         try {
-            const res = await axios.get(`${API_URL}/api/reviews`);
+            const res = await axios.get(`${API_URL}/reviews`);
             setReviews(res.data);
         } catch (err) {
             console.log(err);
@@ -28,7 +28,7 @@ function ReviewPage() {
         e.preventDefault();
 
         try {
-            await axios.post(`${API_URL}/api/reviews`, form);
+            await axios.post(`${API_URL}reviews`, form);
 
             alert("Review submitted!");
 

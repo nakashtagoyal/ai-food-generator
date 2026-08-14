@@ -23,7 +23,7 @@ function MealPlannerPage() {
       const token = localStorage.getItem("token");
 
       const res = await axios.post(
-        `${API_URL}/api/recipes/meal-plan`,
+        `${API_URL}/recipes/meal-plan`,
         {
           days,
           goals,
@@ -54,7 +54,7 @@ function MealPlannerPage() {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        `${API_URL}/api/recipes/save-meal-plan`,
+        `${API_URL}/recipes/save-meal-plan`,
         {
           days,
           goals,

@@ -32,7 +32,7 @@ export default function MyRecipes() {
             const token = localStorage.getItem("token");
 
             const res = await axios.get(
-                `${API_URL}/api/recipes/mine`,
+                `${API_URL}/recipes/mine`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -97,7 +97,7 @@ export default function MyRecipes() {
             const token = localStorage.getItem("token");
 
             await axios.delete(
-                `${API_URL}/api/recipes/${id}`,
+                `${API_URL}/recipes/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -204,7 +204,7 @@ export default function MyRecipes() {
                                     const token = localStorage.getItem("token");
 
                                     await axios.post(
-                                        `${API_URL}/api/recipes/save`,
+                                        `${API_URL}/recipes/save`,
                                         recipe,
                                         {
                                             headers: {

@@ -22,7 +22,7 @@ function ContactPage() {
         e.preventDefault();
 
         try {
-            await axios.post(`${API_URL}/api/contact`, form);
+            await axios.post(`${API_URL}/contact`, form);
 
             alert("Your query has been submitted successfully!");
 
