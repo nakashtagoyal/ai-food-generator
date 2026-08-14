@@ -3,6 +3,8 @@ import axios from "axios";
 import { jsPDF } from "jspdf";
 import QRCode from "qrcode";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 //Generate meal plan
 function MealPlannerPage() {
   const [days, setDays] = useState(7);
@@ -21,7 +23,7 @@ function MealPlannerPage() {
       const token = localStorage.getItem("token");
 
       const res = await axios.post(
-        "http://localhost:5000/api/recipes/meal-plan",
+        `${API_URL}/api/recipes/meal-plan`,
         {
           days,
           goals,
@@ -52,7 +54,7 @@ function MealPlannerPage() {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        "http://localhost:5000/api/recipes/save-meal-plan",
+        `${API_URL}/api/recipes/save-meal-plan`,
         {
           days,
           goals,

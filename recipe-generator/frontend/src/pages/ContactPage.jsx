@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function ContactPage() {
     const [form, setForm] = useState({
         name: "",
@@ -20,7 +22,7 @@ function ContactPage() {
         e.preventDefault();
 
         try {
-            await axios.post("http://localhost:5000/api/contact", form);
+            await axios.post(`${API_URL}/api/contact`, form);
 
             alert("Your query has been submitted successfully!");
 

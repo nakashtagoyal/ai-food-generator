@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function ReviewPage() {
     const [reviews, setReviews] = useState([]);
     const [form, setForm] = useState({
@@ -15,7 +17,7 @@ function ReviewPage() {
 
     const fetchReviews = async () => {
         try {
-            const res = await axios.get("http://localhost:5000/api/reviews");
+            const res = await axios.get(`${API_URL}/api/reviews`);
             setReviews(res.data);
         } catch (err) {
             console.log(err);
@@ -26,7 +28,7 @@ function ReviewPage() {
         e.preventDefault();
 
         try {
-            await axios.post("http://localhost:5000/api/reviews", form);
+            await axios.post(`${API_URL}/api/reviews`, form);
 
             alert("Review submitted!");
 

@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function MyRecipes() {
     const [showModal, setShowModal] = useState(false);
     const [recipe, setRecipe] = useState({
@@ -30,7 +32,7 @@ export default function MyRecipes() {
             const token = localStorage.getItem("token");
 
             const res = await axios.get(
-                "http://localhost:5000/api/recipes/mine",
+                `${API_URL}/api/recipes/mine`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -95,7 +97,7 @@ export default function MyRecipes() {
             const token = localStorage.getItem("token");
 
             await axios.delete(
-                `http://localhost:5000/api/recipes/${id}`,
+                `${API_URL}/api/recipes/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -202,7 +204,7 @@ export default function MyRecipes() {
                                     const token = localStorage.getItem("token");
 
                                     await axios.post(
-                                        "http://localhost:5000/api/recipes/save",
+                                        `${API_URL}/api/recipes/save`,
                                         recipe,
                                         {
                                             headers: {
