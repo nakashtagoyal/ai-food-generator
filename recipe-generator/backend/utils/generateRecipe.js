@@ -221,82 +221,24 @@ async function generateMealPlanChunk({
   const prompt = `
 You are an expert nutritionist and professional chef.
 
-Create a unique ${days}-day meal plan.
+Create a ${days}-day meal plan.
 
 Goal: ${goal}
 Diet: ${diet}
 Allergies: ${allergies.join(", ") || "None"}
 
-Rules:
-- Every day must be different.
-- Breakfast, Lunch, Dinner and Snack.
+IMPORTANT RULES:
+- Create exactly ${days} days.
+- Every day must contain breakfast, lunch, dinner and snack.
 - Never repeat meals.
 - Never use allergic ingredients.
-- Return ONLY valid JSON.
-- No markdown.
-- No explanation.
-
-Return exactly this structure:
-
-{
-  "mealPlan": [
-    {
-      "day": 1,
-      "breakfast": {
-        "name": "",
-        "ingredients": [
-          {
-            "name": "",
-            "quantity": ""
-          }
-        ],
-        "instructions": ["", "", ""],
-        "prepTime": "10 mins",
-        "cookTime": "15 mins",
-        "calories": 350
-      },
-      "lunch": {
-        "name": "",
-        "ingredients": [
-          {
-            "name": "",
-            "quantity": ""
-          }
-        ],
-        "instructions": ["", "", ""],
-        "prepTime": "15 mins",
-        "cookTime": "20 mins",
-        "calories": 550
-      },
-      "dinner": {
-        "name": "",
-        "ingredients": [
-          {
-            "name": "",
-            "quantity": ""
-          }
-        ],
-        "instructions": ["", "", ""],
-        "prepTime": "20 mins",
-        "cookTime": "25 mins",
-        "calories": 600
-      },
-      "snack": {
-        "name": "",
-        "ingredients": [
-          {
-            "name": "",
-            "quantity": ""
-          }
-        ],
-        "instructions": ["", ""],
-        "prepTime": "5 mins",
-        "cookTime": "0 mins",
-        "calories": 180
-      }
-    }
-  ]
-}
+- Respect the diet.
+- Return ONLY JSON.
+- Do not include markdown.
+- Do not include explanations.
+- The top-level JSON object MUST contain a property called "mealPlan".
+- "mealPlan" MUST be an array.
+- The array MUST contain exactly ${days} objects.
 `;
 
   try {
@@ -313,15 +255,279 @@ Return exactly this structure:
         ],
 
         response_format: {
-          type: "json_object",
+          type: "json_schema",
+          json_schema: {
+            name: "meal_plan",
+            strict: true,
+
+            schema: {
+              type: "object",
+
+              properties: {
+                mealPlan: {
+                  type: "array",
+
+                  items: {
+                    type: "object",
+
+                    properties: {
+                      day: {
+                        type: "integer",
+                      },
+
+                      breakfast: {
+                        type: "object",
+                        properties: {
+                          name: {
+                            type: "string",
+                          },
+
+                          ingredients: {
+                            type: "array",
+                            items: {
+                              type: "object",
+                              properties: {
+                                name: {
+                                  type: "string",
+                                },
+                                quantity: {
+                                  type: "string",
+                                },
+                              },
+                              required: ["name", "quantity"],
+                              additionalProperties: false,
+                            },
+                          },
+
+                          instructions: {
+                            type: "array",
+                            items: {
+                              type: "string",
+                            },
+                          },
+
+                          prepTime: {
+                            type: "string",
+                          },
+
+                          cookTime: {
+                            type: "string",
+                          },
+
+                          calories: {
+                            type: "integer",
+                          },
+                        },
+
+                        required: [
+                          "name",
+                          "ingredients",
+                          "instructions",
+                          "prepTime",
+                          "cookTime",
+                          "calories",
+                        ],
+
+                        additionalProperties: false,
+                      },
+
+                      lunch: {
+                        type: "object",
+                        properties: {
+                          name: {
+                            type: "string",
+                          },
+
+                          ingredients: {
+                            type: "array",
+                            items: {
+                              type: "object",
+                              properties: {
+                                name: {
+                                  type: "string",
+                                },
+                                quantity: {
+                                  type: "string",
+                                },
+                              },
+                              required: ["name", "quantity"],
+                              additionalProperties: false,
+                            },
+                          },
+
+                          instructions: {
+                            type: "array",
+                            items: {
+                              type: "string",
+                            },
+                          },
+
+                          prepTime: {
+                            type: "string",
+                          },
+
+                          cookTime: {
+                            type: "string",
+                          },
+
+                          calories: {
+                            type: "integer",
+                          },
+                        },
+
+                        required: [
+                          "name",
+                          "ingredients",
+                          "instructions",
+                          "prepTime",
+                          "cookTime",
+                          "calories",
+                        ],
+
+                        additionalProperties: false,
+                      },
+
+                      dinner: {
+                        type: "object",
+                        properties: {
+                          name: {
+                            type: "string",
+                          },
+
+                          ingredients: {
+                            type: "array",
+                            items: {
+                              type: "object",
+                              properties: {
+                                name: {
+                                  type: "string",
+                                },
+                                quantity: {
+                                  type: "string",
+                                },
+                              },
+                              required: ["name", "quantity"],
+                              additionalProperties: false,
+                            },
+                          },
+
+                          instructions: {
+                            type: "array",
+                            items: {
+                              type: "string",
+                            },
+                          },
+
+                          prepTime: {
+                            type: "string",
+                          },
+
+                          cookTime: {
+                            type: "string",
+                          },
+
+                          calories: {
+                            type: "integer",
+                          },
+                        },
+
+                        required: [
+                          "name",
+                          "ingredients",
+                          "instructions",
+                          "prepTime",
+                          "cookTime",
+                          "calories",
+                        ],
+
+                        additionalProperties: false,
+                      },
+
+                      snack: {
+                        type: "object",
+                        properties: {
+                          name: {
+                            type: "string",
+                          },
+
+                          ingredients: {
+                            type: "array",
+                            items: {
+                              type: "object",
+                              properties: {
+                                name: {
+                                  type: "string",
+                                },
+                                quantity: {
+                                  type: "string",
+                                },
+                              },
+                              required: ["name", "quantity"],
+                              additionalProperties: false,
+                            },
+                          },
+
+                          instructions: {
+                            type: "array",
+                            items: {
+                              type: "string",
+                            },
+                          },
+
+                          prepTime: {
+                            type: "string",
+                          },
+
+                          cookTime: {
+                            type: "string",
+                          },
+
+                          calories: {
+                            type: "integer",
+                          },
+                        },
+
+                        required: [
+                          "name",
+                          "ingredients",
+                          "instructions",
+                          "prepTime",
+                          "cookTime",
+                          "calories",
+                        ],
+
+                        additionalProperties: false,
+                      },
+                    },
+
+                    required: [
+                      "day",
+                      "breakfast",
+                      "lunch",
+                      "dinner",
+                      "snack",
+                    ],
+
+                    additionalProperties: false,
+                  },
+                },
+              },
+
+              required: ["mealPlan"],
+              additionalProperties: false,
+            },
+          },
         },
 
+        // Keep reasoning simple for this generation task
         reasoning_format: "hidden",
+        reasoning_effort: "low",
 
-        temperature: 0.3,
+        temperature: 0.2,
 
-        max_completion_tokens: 12000,
+        max_completion_tokens: 16000,
       },
+
       {
         headers: {
           Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
@@ -331,18 +537,52 @@ Return exactly this structure:
       }
     );
 
+    console.log("=================================");
     console.log("GROQ STATUS:", response.status);
+    console.log("=================================");
 
-    const text = response.data?.choices?.[0]?.message?.content;
+    const message = response.data?.choices?.[0]?.message;
+
+    console.log("GROQ MESSAGE:", JSON.stringify(message, null, 2));
+
+    const text = message?.content;
 
     if (!text) {
       throw new Error("Groq returned an empty response");
     }
 
-    const data = JSON.parse(text);
+    console.log("GROQ RAW CONTENT:");
+    console.log(text);
 
-    if (!Array.isArray(data.mealPlan)) {
-      throw new Error("Groq response does not contain mealPlan array");
+    let data;
+
+    try {
+      data = JSON.parse(text);
+    } catch (parseError) {
+      console.error("JSON PARSE ERROR:");
+      console.error(parseError);
+      console.error("RAW GROQ CONTENT:");
+      console.error(text);
+
+      throw new Error("Groq returned invalid JSON");
+    }
+
+    console.log("PARSED GROQ DATA:");
+    console.log(JSON.stringify(data, null, 2));
+
+    if (!data || !Array.isArray(data.mealPlan)) {
+      console.error("EXPECTED mealPlan ARRAY BUT GOT:");
+      console.error(JSON.stringify(data, null, 2));
+
+      throw new Error(
+        "Groq response does not contain mealPlan array"
+      );
+    }
+
+    if (data.mealPlan.length !== days) {
+      console.warn(
+        `Expected ${days} days but Groq returned ${data.mealPlan.length}`
+      );
     }
 
     return data.mealPlan;
@@ -353,6 +593,7 @@ Return exactly this structure:
 
     if (err.response) {
       console.error("STATUS:", err.response.status);
+
       console.error(
         "DATA:",
         JSON.stringify(err.response.data, null, 2)
