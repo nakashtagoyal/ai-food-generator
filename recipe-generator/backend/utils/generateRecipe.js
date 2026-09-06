@@ -76,6 +76,8 @@ Rules:
 - Each recipe should be meaningfully different.
 - Respect the user's diet preferences.
 - Do not force recipes just to reach 20.
+- difficulty MUST be exactly one of: "easy", "medium", "hard"
+- Use lowercase only.
 
 Return ONLY valid JSON in this format:
 
@@ -111,15 +113,15 @@ Return ONLY valid JSON in this format:
             content: prompt
           }
         ],
-       response_format: {
-  type: "json_object"
-},
+        response_format: {
+          type: "json_object"
+        },
 
-reasoning_format: "hidden",
+        reasoning_format: "hidden",
 
-temperature: 0.7,
+        temperature: 0.7,
 
-max_completion_tokens: 12000
+        max_completion_tokens: 12000
       },
       {
         headers: {
@@ -150,6 +152,13 @@ max_completion_tokens: 12000
       console.error("Invalid JSON received from Groq:");
       console.log(cleaned);
       throw new Error("Groq returned invalid JSON");
+    }
+
+    // Normalize difficulty to match MongoDB enum
+    for (const recipe of data.recipes) {
+      if (recipe.difficulty) {
+        recipe.difficulty = recipe.difficulty.toLowerCase();
+      }
     }
 
     for (const recipe of data.recipes) {
