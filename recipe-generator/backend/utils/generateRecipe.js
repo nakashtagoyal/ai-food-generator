@@ -57,7 +57,15 @@ ${userIngredients.join(", ")}
 
 Diet: ${diet.join(", ") || "None"}
 
-Generate ALL possible recipes that can reasonably be made using these ingredients.
+Generate as many UNIQUE and realistic recipes as possible using the provided ingredients.
+
+Try to generate up to 20 recipes.
+
+If fewer than 20 genuinely different recipes can reasonably be created, return only the realistic recipes.
+
+Do not force recipes just to reach 20.
+Do not generate duplicate or very similar recipes.
+Each recipe should have a clearly different main preparation or cooking style.
 
 Rules:
 - Use the provided ingredients as the main ingredients.
@@ -65,6 +73,9 @@ Rules:
 - If an important ingredient is missing, mention it in the recipe description.
 - Return as many different recipes as possible.
 - Do NOT create duplicate or very similar recipes.
+- Each recipe should be meaningfully different.
+- Respect the user's diet preferences.
+- Do not force recipes just to reach 20.
 
 Return ONLY valid JSON in this format:
 
