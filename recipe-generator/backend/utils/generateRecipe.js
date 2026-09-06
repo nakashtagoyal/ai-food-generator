@@ -111,10 +111,15 @@ Return ONLY valid JSON in this format:
             content: prompt
           }
         ],
-        response_format: {
-          type: "json_object"
-        },
-        temperature: 0.7
+       response_format: {
+  type: "json_object"
+},
+
+reasoning_format: "hidden",
+
+temperature: 0.7,
+
+max_completion_tokens: 12000
       },
       {
         headers: {
