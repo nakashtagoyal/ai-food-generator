@@ -201,7 +201,7 @@ async function generateMealPlanChunk({
   allergies = [],
 }) {
   if (!process.env.GROQ_API_KEY) {
-    throw new Error("GROQ_API_KEY is missing in .env");
+    throw new Error("GROQ_API_KEY is missing");
   }
 
   const prompt = `
@@ -222,43 +222,63 @@ Rules:
 - No markdown.
 - No explanation.
 
-Return:
+Return exactly this structure:
 
 {
-  "mealPlan":[
+  "mealPlan": [
     {
-      "day":1,
-      "breakfast":{
-        "name":"",
-        "ingredients":[{"name":"","quantity":""}],
-        "instructions":["","",""],
-        "prepTime":"10 mins",
-        "cookTime":"15 mins",
-        "calories":350
+      "day": 1,
+      "breakfast": {
+        "name": "",
+        "ingredients": [
+          {
+            "name": "",
+            "quantity": ""
+          }
+        ],
+        "instructions": ["", "", ""],
+        "prepTime": "10 mins",
+        "cookTime": "15 mins",
+        "calories": 350
       },
-      "lunch":{
-        "name":"",
-        "ingredients":[{"name":"","quantity":""}],
-        "instructions":["","",""],
-        "prepTime":"15 mins",
-        "cookTime":"20 mins",
-        "calories":550
+      "lunch": {
+        "name": "",
+        "ingredients": [
+          {
+            "name": "",
+            "quantity": ""
+          }
+        ],
+        "instructions": ["", "", ""],
+        "prepTime": "15 mins",
+        "cookTime": "20 mins",
+        "calories": 550
       },
-      "dinner":{
-        "name":"",
-        "ingredients":[{"name":"","quantity":""}],
-        "instructions":["","",""],
-        "prepTime":"20 mins",
-        "cookTime":"25 mins",
-        "calories":600
+      "dinner": {
+        "name": "",
+        "ingredients": [
+          {
+            "name": "",
+            "quantity": ""
+          }
+        ],
+        "instructions": ["", "", ""],
+        "prepTime": "20 mins",
+        "cookTime": "25 mins",
+        "calories": 600
       },
-      "snack":{
-        "name":"",
-        "ingredients":[{"name":"","quantity":""}],
-        "instructions":["",""],
-        "prepTime":"5 mins",
-        "cookTime":"0 mins",
-        "calories":180
+      "snack": {
+        "name": "",
+        "ingredients": [
+          {
+            "name": "",
+            "quantity": ""
+          }
+        ],
+        "instructions": ["", ""],
+        "prepTime": "5 mins",
+        "cookTime": "0 mins",
+        "calories": 180
       }
     }
   ]
@@ -270,16 +290,23 @@ Return:
       GROQ_URL,
       {
         model: "openai/gpt-oss-20b",
+
         messages: [
           {
             role: "user",
             content: prompt,
           },
         ],
+
         response_format: {
           type: "json_object",
         },
-        temperature: 0.3
+
+        reasoning_format: "hidden",
+
+        temperature: 0.3,
+
+        max_completion_tokens: 12000,
       },
       {
         headers: {
@@ -290,28 +317,38 @@ Return:
       }
     );
 
-    const text = response.data.choices[0].message.content;
+    console.log("GROQ STATUS:", response.status);
 
-    let cleaned = text
-      .replace(/```json/g, "")
-      .replace(/```/g, "")
-      .trim();
+    const text = response.data?.choices?.[0]?.message?.content;
 
-    cleaned = cleaned.substring(cleaned.indexOf("{"));
-    cleaned = cleaned.substring(0, cleaned.lastIndexOf("}") + 1);
+    if (!text) {
+      throw new Error("Groq returned an empty response");
+    }
 
-    const data = JSON.parse(cleaned);
+    const data = JSON.parse(text);
+
+    if (!Array.isArray(data.mealPlan)) {
+      throw new Error("Groq response does not contain mealPlan array");
+    }
 
     return data.mealPlan;
 
   } catch (err) {
 
+    console.error("========== GROQ ERROR ==========");
+
     if (err.response) {
-      console.log("STATUS:", err.response?.status);
-      console.log(JSON.stringify(err.response.data, null, 2));
+      console.error("STATUS:", err.response.status);
+      console.error(
+        "DATA:",
+        JSON.stringify(err.response.data, null, 2)
+      );
     } else {
-      console.error(err);
+      console.error("MESSAGE:", err.message);
+      console.error(err.stack);
     }
+
+    console.error("================================");
 
     throw err;
   }
@@ -361,4 +398,3 @@ module.exports = {
   buildShoppingList,
   generateAIMealPlan,
 };
-
